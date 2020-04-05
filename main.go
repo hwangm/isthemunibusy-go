@@ -6,10 +6,12 @@ import (
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
+	"github.com/hwangm/isthemunibusy-go/dal"
 	"github.com/hwangm/isthemunibusy-go/queries"
 )
 
 func main() {
+	dal.InitDb()
 	// Schema
 	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: queries.GetRootFields()}
 	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
