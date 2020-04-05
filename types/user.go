@@ -12,13 +12,7 @@ type User struct {
 	ID        int    `json:"id"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
-	Roles     []Role `pg:"many2many:user_roles"`
-}
-
-// UserToRole type definition for many2many table joining User and Roles
-type UserToRole struct {
-	UserId int
-	RoleId int
+	Roles     []Role `pg:"many2many:user_roles, joinFK:user_id"`
 }
 
 // UserType is GraphQL schema for the user type
@@ -32,11 +26,13 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.NewList(RoleType),
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				userID := params.Source.(User).ID
-				user := &User{ID: userID}
-				err := dal.DB.Model(user).Relation("Roles").First()
+				user := new(User)
+				err := dal.DB.Model(user).Where("id = ?", userID).Relation("Roles").First()
 				if err != nil {
 					fmt.Printf("Error retrieving user roles: %v", err)
+					return nil, err
 				}
+				// fmt.Printf("User roles for user id %v are: %v", userID, user.Roles)
 				return user.Roles, nil
 			},
 		},

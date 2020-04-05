@@ -17,6 +17,7 @@ func GetUserQuery() *graphql.Field {
 			err := dal.DB.Model(&users).Select()
 			if err != nil {
 				fmt.Printf("Error retrieving all Users: %v", err)
+				return nil, err
 			}
 			return users, nil
 		},

@@ -7,6 +7,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"github.com/hwangm/isthemunibusy-go/dal"
+	"github.com/hwangm/isthemunibusy-go/mutations"
 	"github.com/hwangm/isthemunibusy-go/queries"
 )
 
@@ -14,16 +15,19 @@ func main() {
 	dal.InitDb()
 	// Schema
 	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: queries.GetRootFields()}
-	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
+	rootMutation := graphql.ObjectConfig{Name: "RootMutation", Fields: mutations.GetRootFields()}
+	schemaConfig := graphql.SchemaConfig{
+		Query:    graphql.NewObject(rootQuery),
+		Mutation: graphql.NewObject(rootMutation),
+	}
 	schema, err := graphql.NewSchema(schemaConfig)
 	if err != nil {
 		log.Fatalf("failed to create new schema, error: %v", err)
 	}
 
 	h := handler.New(&handler.Config{
-		Schema:   &schema,
-		Pretty:   true,
-		GraphiQL: true,
+		Schema: &schema,
+		Pretty: true,
 	})
 
 	http.Handle("/graphql", h)
