@@ -26,8 +26,9 @@ func main() {
 	}
 
 	h := handler.New(&handler.Config{
-		Schema: &schema,
-		Pretty: true,
+		Schema:   &schema,
+		Pretty:   true,
+		GraphiQL: true,
 	})
 
 	http.Handle("/graphql", h)

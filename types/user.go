@@ -12,7 +12,14 @@ type User struct {
 	ID        int    `json:"id"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
-	Roles     []Role `pg:"many2many:user_roles, joinFK:user_id"`
+	Roles     []Role `pg:"many2many:user_roles, joinFK:role_id"`
+}
+
+// UserToRole type definition - join table for users and roles
+type UserToRole struct {
+	tableName struct{} `pg:"user_roles"`
+	UserID    int
+	RoleID    int
 }
 
 // UserType is GraphQL schema for the user type

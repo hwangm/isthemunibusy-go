@@ -8,5 +8,7 @@ import (
 func GetRootFields() graphql.Fields {
 	return graphql.Fields{
 		"createUser": GetCreateUserMutation(),
+		"deleteUser": GetDeleteUserByIDMutation(),
+		"createRole": GetCreateRoleMutation(),
 	}
 }

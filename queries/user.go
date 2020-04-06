@@ -8,8 +8,8 @@ import (
 	"github.com/hwangm/isthemunibusy-go/types"
 )
 
-// GetUserQuery returns User field information
-func GetUserQuery() *graphql.Field {
+// GetUsersQuery returns a list of Users
+func GetUsersQuery() *graphql.Field {
 	return &graphql.Field{
 		Type: graphql.NewList(types.UserType),
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
@@ -20,6 +20,28 @@ func GetUserQuery() *graphql.Field {
 				return nil, err
 			}
 			return users, nil
+		},
+	}
+}
+
+// GetUserQuery returns a single user by id
+func GetUserQuery() *graphql.Field {
+	return &graphql.Field{
+		Type: types.UserType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			userID := params.Args["id"].(int)
+			user := types.User{ID: userID}
+			err := dal.DB.Select(&user)
+			if err != nil {
+				fmt.Printf("Error retrieving user by id: %v", err)
+				return nil, err
+			}
+			return user, nil
 		},
 	}
 }
