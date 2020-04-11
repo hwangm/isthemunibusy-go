@@ -4,8 +4,8 @@ import "github.com/graphql-go/graphql"
 
 // Role type definition
 type Role struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID   int
+	Name string
 }
 
 // RoleType is the GraphQL schema for the role type

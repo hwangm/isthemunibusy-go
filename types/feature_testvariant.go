@@ -23,12 +23,12 @@ type FeatureTestVariant struct {
 var FeatureTestVariantType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "FeatureTestVariant",
 	Fields: graphql.Fields{
-		"id":         &graphql.Field{Type: graphql.ID},
-		"name":       &graphql.Field{Type: graphql.String},
-		"created_at": &graphql.Field{Type: graphql.DateTime},
-		"updated_at": &graphql.Field{Type: graphql.DateTime},
-		"feature_test": &graphql.Field{
-			Type: FeatureTest,
+		"id":        &graphql.Field{Type: graphql.ID},
+		"name":      &graphql.Field{Type: graphql.String},
+		"createdAt": &graphql.Field{Type: graphql.DateTime},
+		"updatedAt": &graphql.Field{Type: graphql.DateTime},
+		"featureTest": &graphql.Field{
+			Type: FeatureTestType,
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				featureTestID := params.Source.(FeatureTestVariant).FeatureTestID
 				featureTest := new(FeatureTest)

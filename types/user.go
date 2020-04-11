@@ -10,11 +10,12 @@ import (
 
 // User type definition
 type User struct {
-	ID        int       `json:"id"`
-	Firstname string    `json:"firstname"`
-	Lastname  string    `json:"lastname"`
-	Roles     []Role    `pg:"many2many:user_roles,joinFK:role_id"`
-	DeletedAt time.Time `pg:",soft_delete"`
+	ID                  int                  `json:"id"`
+	Firstname           string               `json:"firstname"`
+	Lastname            string               `json:"lastname"`
+	Roles               []Role               `pg:"many2many:user_roles,joinFK:role_id"`
+	FeatureTestVariants []FeatureTestVariant `pg:"many2many:feature_usertestvariants,joinFK:feature_testvariant_id"`
+	DeletedAt           time.Time            `pg:",soft_delete"`
 }
 
 // UserToRole type definition - join table for users and roles
@@ -22,6 +23,13 @@ type UserToRole struct {
 	tableName struct{} `pg:"user_roles"`
 	UserID    int
 	RoleID    int
+}
+
+// UserToFeatureUserTestVariant - join table for users and feature test variants
+type UserToFeatureUserTestVariant struct {
+	tableName            struct{} `pg:"feature_usertestvariants"`
+	UserID               int
+	FeatureTestVariantID int `pg:feature_testvariant_id`
 }
 
 // UserType is GraphQL schema for the user type
@@ -43,6 +51,19 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 				}
 				// fmt.Printf("User roles for user id %v are: %v", userID, user.Roles)
 				return user.Roles, nil
+			},
+		},
+		"feature_test_variants": &graphql.Field{
+			Type: graphql.NewList(FeatureTestVariantType),
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				userID := params.Source.(User).ID
+				user := new(User)
+				err := dal.DB.Model(user).Where("id = ?", userID).Relation("FeatureTestVariants").First()
+				if err != nil {
+					fmt.Printf("Error retrieving user feature test variants: %v", err)
+					return nil, err
+				}
+				return user.FeatureTestVariants, nil
 			},
 		},
 	},
