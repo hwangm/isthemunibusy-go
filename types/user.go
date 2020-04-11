@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/graphql-go/graphql"
 	"github.com/hwangm/isthemunibusy-go/dal"
@@ -9,10 +10,11 @@ import (
 
 // User type definition
 type User struct {
-	ID        int    `json:"id"`
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
-	Roles     []Role `pg:"many2many:user_roles, joinFK:role_id"`
+	ID        int       `json:"id"`
+	Firstname string    `json:"firstname"`
+	Lastname  string    `json:"lastname"`
+	Roles     []Role    `pg:"many2many:user_roles,joinFK:role_id"`
+	DeletedAt time.Time `pg:",soft_delete"`
 }
 
 // UserToRole type definition - join table for users and roles
