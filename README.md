@@ -7,6 +7,10 @@ This was originally a project to predict how crowded the muni trains would be, b
     - Name
     - Start date
     - End date
+    - Variants[]
+        - Name
+        - Percentage
+        - Is control?
 - Delete an existing feature test
     - Cascade to feature test variants
     - Cascade to users with those test variants
