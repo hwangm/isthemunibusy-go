@@ -18,6 +18,11 @@ type FeatureTest struct {
 	EndTime   time.Time
 }
 
+// FeatureTestInput is the type for feature test input graphql type
+type FeatureTestInput struct {
+	Name string
+}
+
 // FeatureTestType is the GraphQL schema for feature tests
 var FeatureTestType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "FeatureTest",
@@ -28,5 +33,15 @@ var FeatureTestType = graphql.NewObject(graphql.ObjectConfig{
 		"updatedAt": &graphql.Field{Type: graphql.DateTime},
 		"startTime": &graphql.Field{Type: graphql.DateTime},
 		"endTime":   &graphql.Field{Type: graphql.DateTime},
+	},
+})
+
+// FeatureTestInputType is the GraphQL schema for creating a feature test
+var FeatureTestInputType = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "FeatureTestInput",
+	Fields: graphql.InputObjectConfigFieldMap{
+		"name": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
 	},
 })
