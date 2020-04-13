@@ -16,11 +16,7 @@ type FeatureTest struct {
 	UpdatedAt time.Time
 	StartTime time.Time
 	EndTime   time.Time
-}
-
-// FeatureTestInput is the type for feature test input graphql type
-type FeatureTestInput struct {
-	Name string
+	DeletedAt time.Time `pg:",soft_delete"`
 }
 
 // FeatureTestType is the GraphQL schema for feature tests

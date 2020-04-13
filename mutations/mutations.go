@@ -11,5 +11,6 @@ func GetRootFields() graphql.Fields {
 		"deleteUser":        GetDeleteUserByIDMutation(),
 		"createRole":        GetCreateRoleMutation(),
 		"createFeatureTest": GetCreateFeatureTestMutation(),
+		"deleteFeatureTest": GetDeleteFeatureTestMutation(),
 	}
 }
