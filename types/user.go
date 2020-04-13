@@ -29,7 +29,8 @@ type UserToRole struct {
 type UserToFeatureUserTestVariant struct {
 	tableName            struct{} `pg:"feature_usertestvariants"`
 	UserID               int
-	FeatureTestVariantID int `pg:feature_testvariant_id`
+	FeatureTestVariantID int       `pg:feature_testvariant_id`
+	DeletedAt            time.Time `pg:",soft_delete"`
 }
 
 // UserType is GraphQL schema for the user type
@@ -53,7 +54,7 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 				return user.Roles, nil
 			},
 		},
-		"feature_test_variants": &graphql.Field{
+		"featureTestVariants": &graphql.Field{
 			Type: graphql.NewList(FeatureTestVariantType),
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				userID := params.Source.(User).ID

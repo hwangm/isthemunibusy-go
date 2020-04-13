@@ -7,6 +7,7 @@ import (
 	"github.com/go-pg/pg/v9"
 	"github.com/graphql-go/graphql"
 	"github.com/hwangm/isthemunibusy-go/dal"
+	"github.com/hwangm/isthemunibusy-go/service"
 	"github.com/hwangm/isthemunibusy-go/types"
 )
 
@@ -58,10 +59,24 @@ func GetDeleteFeatureTestMutation() *graphql.Field {
 					return err
 				}
 
-				featureTestVariant := types.FeatureTestVariant{}
-				_, err = tx.Model(&featureTestVariant).Where("feature_test_id = ?", featureTestID).Delete()
+				featureTestVariants := []types.FeatureTestVariant{}
+				err = tx.Model(&featureTestVariants).Where("feature_test_id = ?", featureTestID).Select()
 				if err != nil {
-					fmt.Printf("Error deleting feature test variants from feature test: %v", err)
+					fmt.Printf("Error selecting feature test variants from feature test: %v", err)
+					return err
+				}
+
+				if len(featureTestVariants) > 0 {
+					for _, variant := range featureTestVariants {
+						err := service.DeleteUserFeatureTestVariantsByVariantID(*tx, variant.ID)
+						if err != nil {
+							return err
+						}
+					}
+				}
+
+				err = service.DeleteFeatureTestVariantsByTestID(*tx, featureTestID)
+				if err != nil {
 					return err
 				}
 
