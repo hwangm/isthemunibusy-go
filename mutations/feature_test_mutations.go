@@ -21,7 +21,10 @@ func GetCreateFeatureTestMutation() *graphql.Field {
 			},
 		},
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-			name := params.Args["input"].(map[string]interface{})["name"].(string)
+			input := params.Args["input"].(map[string]interface{})
+			name := input["name"].(string)
+			variants := input["variants"].([]interface{})
+
 			currentTime := time.Now()
 			endTime := currentTime.Add(time.Hour * 24 * 365) // 1 year
 			featureTest := types.FeatureTest{
@@ -29,9 +32,35 @@ func GetCreateFeatureTestMutation() *graphql.Field {
 				StartTime: currentTime,
 				EndTime:   endTime,
 			}
-			err := dal.DB.Insert(&featureTest)
+			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {
+				err := tx.Insert(&featureTest)
+
+				if err != nil {
+					fmt.Printf("Error creating new feature test: %v", err)
+					return err
+				}
+
+				if len(variants) > 0 {
+					for _, variant := range variants {
+						variantMap := variant.(map[string]interface{})
+						testVariant := types.FeatureTestVariant{
+							Name:          variantMap["name"].(string),
+							IsControl:     variantMap["isControl"].(bool),
+							Percentage:    variantMap["percentage"].(int),
+							FeatureTestID: featureTest.ID,
+						}
+						err := tx.Insert(&testVariant)
+						if err != nil {
+							fmt.Printf("Error creating new feature test variants in feature test: %v", err)
+							return err
+						}
+					}
+				}
+
+				return nil
+			})
+
 			if err != nil {
-				fmt.Printf("Error creating new feature test: %v", err)
 				return nil, err
 			}
 

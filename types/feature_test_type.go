@@ -39,5 +39,8 @@ var FeatureTestInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 		"name": &graphql.InputObjectFieldConfig{
 			Type: graphql.NewNonNull(graphql.String),
 		},
+		"variants": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.NewList(FeatureTestVariantInputType)),
+		},
 	},
 })
