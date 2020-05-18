@@ -29,7 +29,7 @@ type UserToRole struct {
 type UserToFeatureUserTestVariant struct {
 	tableName            struct{} `pg:"feature_usertestvariants"`
 	UserID               int
-	FeatureTestVariantID int       `pg:feature_testvariant_id`
+	FeatureTestVariantID int       `pg:"feature_testvariant_id"`
 	DeletedAt            time.Time `pg:",soft_delete"`
 }
 

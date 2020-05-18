@@ -1,6 +1,7 @@
 package mutations
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -69,6 +70,60 @@ func GetCreateFeatureTestMutation() *graphql.Field {
 	}
 }
 
+// GetUpdateFeatureTestMutation updates an existing feature test given id.
+// Returns error if the feature test to update is not found
+func GetUpdateFeatureTestMutation() *graphql.Field {
+	return &graphql.Field{
+		Type: types.FeatureTestType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"name": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
+			"endTime": &graphql.ArgumentConfig{
+				Type: graphql.DateTime,
+			},
+		},
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			featureTestID := params.Args["id"].(int)
+			var featureTestReturn types.FeatureTest
+			var name string
+			var endTime time.Time
+
+			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {
+				// Update name and end time if present in the update
+				if params.Args["name"] != nil {
+					name = params.Args["name"].(string)
+				}
+
+				if params.Args["endTime"] != nil {
+					endTime = params.Args["endTime"].(time.Time)
+				}
+
+				featureTest, err := service.UpdateFeatureTestByID(tx, featureTestID, &name, &endTime)
+				if err != nil {
+					if err == pg.ErrNoRows {
+						err = errors.New("No feature test found with provided ID")
+					}
+					return err
+				}
+
+				featureTestReturn = *featureTest
+
+				return nil
+			})
+
+			if err != nil {
+				return nil, err
+			}
+
+			return featureTestReturn, nil
+		},
+	}
+}
+
 // GetDeleteFeatureTestMutation deletes a feature test by id
 func GetDeleteFeatureTestMutation() *graphql.Field {
 	return &graphql.Field{
@@ -97,14 +152,14 @@ func GetDeleteFeatureTestMutation() *graphql.Field {
 
 				if len(featureTestVariants) > 0 {
 					for _, variant := range featureTestVariants {
-						err := service.DeleteUserFeatureTestVariantsByVariantID(*tx, variant.ID)
+						err := service.DeleteUserFeatureTestVariantsByVariantID(tx, variant.ID)
 						if err != nil {
 							return err
 						}
 					}
 				}
 
-				err = service.DeleteFeatureTestVariantsByTestID(*tx, featureTestID)
+				err = service.DeleteFeatureTestVariantsByTestID(tx, featureTestID)
 				if err != nil {
 					return err
 				}
