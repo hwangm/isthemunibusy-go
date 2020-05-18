@@ -56,3 +56,21 @@ func UpdateFeatureTestByID(tx *pg.Tx, testID int, name *string, endTime *time.Ti
 
 	return &featureTest, nil
 }
+
+// CreateFeatureTestVariant creates a new feature test variant
+func CreateFeatureTestVariant(tx *pg.Tx, featureTestID int, name string, isControl bool, percentage int) (*types.FeatureTestVariant, error) {
+	testVariant := types.FeatureTestVariant{
+		FeatureTestID: featureTestID,
+		Name:          name,
+		IsControl:     isControl,
+		Percentage:    percentage,
+	}
+
+	err := tx.Insert(&testVariant)
+	if err != nil {
+		fmt.Printf("Error creating new feature test variant: %v", err)
+		return nil, err
+	}
+
+	return &testVariant, nil
+}
