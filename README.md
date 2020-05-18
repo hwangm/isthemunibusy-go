@@ -17,7 +17,7 @@ This was originally a project to predict how crowded the muni trains would be, b
 - Update an existing feature test (DONE)
     - Name
     - End date
-- Create a feature test variant (TBD)
+- Create a feature test variant (DONE)
     - Name
     - Percentage
     - Is control?
