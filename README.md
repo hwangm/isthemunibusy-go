@@ -3,7 +3,7 @@
 This was originally a project to predict how crowded the muni trains would be, but given the current circumstances with COVID-19, I have decided to pivot this project to be a feature test admin tool.
 
 ## Features
-- Create a new feature test (TODO: Add start/end date to input objects)
+- Create a new feature test (TODO: Add start/end date to input object)
     - Name
     - Start date
     - End date
