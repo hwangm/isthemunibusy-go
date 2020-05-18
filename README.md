@@ -11,9 +11,9 @@ This was originally a project to predict how crowded the muni trains would be, b
         - Name
         - Percentage
         - Is control?
-- Delete an existing feature test 
-    - Cascade to feature test variants (DONE)
-    - Cascade to users with those test variants (TBD)
+- Delete an existing feature test (DONE)
+    - Cascade to feature test variants 
+    - Cascade to users with those test variants 
 - Update an existing feature test (TBD)
     - Name
     - End date
