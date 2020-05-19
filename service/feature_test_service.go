@@ -74,3 +74,28 @@ func CreateFeatureTestVariant(tx *pg.Tx, featureTestID int, name string, isContr
 
 	return &testVariant, nil
 }
+
+// UpdateFeatureTestVariant updates an existing feature test variant
+func UpdateFeatureTestVariant(tx *pg.Tx, featureTestVariantID int, name string, isControl bool, percentage int) (*types.FeatureTestVariant, error) {
+	testVariant := types.FeatureTestVariant{
+		ID: featureTestVariantID,
+	}
+
+	err := tx.Select(&testVariant)
+	if err != nil {
+		fmt.Printf("Error selecting existing feature test variant during update: %v", err)
+		return nil, err
+	}
+
+	testVariant.Name = name
+	testVariant.IsControl = isControl
+	testVariant.Percentage = percentage
+
+	err = tx.Update(&testVariant)
+	if err != nil {
+		fmt.Printf("Error updating existing feature test variant during update: %v", err)
+		return nil, err
+	}
+
+	return &testVariant, nil
+}

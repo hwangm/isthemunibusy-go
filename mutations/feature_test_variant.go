@@ -51,3 +51,47 @@ func GetCreateFeatureTestVariantMutation() *graphql.Field {
 		},
 	}
 }
+
+// GetUpdateFeatureTestVariantMutation returns the graphql field config for the updating a feature test variant
+func GetUpdateFeatureTestVariantMutation() *graphql.Field {
+	return &graphql.Field{
+		Type: types.FeatureTestVariantType,
+		Args: graphql.FieldConfigArgument{
+			"featureTestVariantID": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+			"featureTestVariant": &graphql.ArgumentConfig{
+				Type: types.FeatureTestVariantInputType,
+			},
+		},
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			variantID := params.Args["featureTestVariantID"].(int)
+			variant := params.Args["featureTestVariant"].(map[string]interface{})
+			var variantReturn types.FeatureTestVariant
+
+			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {
+				testVariant, err := service.UpdateFeatureTestVariant(
+					tx,
+					variantID,
+					variant["name"].(string),
+					variant["isControl"].(bool),
+					variant["percentage"].(int),
+				)
+
+				if err != nil {
+					return err
+				}
+
+				variantReturn = *testVariant
+
+				return nil
+			})
+
+			if err != nil {
+				return nil, err
+			}
+
+			return variantReturn, nil
+		},
+	}
+}
