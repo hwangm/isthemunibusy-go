@@ -95,3 +95,38 @@ func GetUpdateFeatureTestVariantMutation() *graphql.Field {
 		},
 	}
 }
+
+// GetDeleteFeatureTestVariantMutation returns the graphql field config for deleting a feature test variant
+func GetDeleteFeatureTestVariantMutation() *graphql.Field {
+	return &graphql.Field{
+		Type: graphql.Boolean,
+		Args: graphql.FieldConfigArgument{
+			"featureTestVariantID": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			variantID := params.Args["featureTestVariantID"].(int)
+
+			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {
+				err := service.DeleteFeatureTestVariant(tx, variantID)
+				if err != nil {
+					return err
+				}
+
+				err = service.DeleteUserFeatureTestVariantsByVariantID(tx, variantID)
+				if err != nil {
+					return err
+				}
+
+				return nil
+			})
+
+			if err != nil {
+				return false, err
+			}
+
+			return true, nil
+		},
+	}
+}

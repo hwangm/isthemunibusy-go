@@ -14,7 +14,7 @@ func GetRootFields() graphql.Fields {
 		"deleteFeatureTest":        GetDeleteFeatureTestMutation(),
 		"updateFeatureTest":        GetUpdateFeatureTestMutation(),
 		"createFeatureTestVariant": GetCreateFeatureTestVariantMutation(),
-		// "deleteFeatureTestVariant": GetDeleteFeatureTestVariantMutation(),
+		"deleteFeatureTestVariant": GetDeleteFeatureTestVariantMutation(),
 		"updateFeatureTestVariant": GetUpdateFeatureTestVariantMutation(),
 		// "createUserTestVariant": GetCreateUserTestVariantMutation(),
 		// "updateUserTestVariant": GetUpdateUserTestVariantMutation(),

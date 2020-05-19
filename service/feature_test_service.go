@@ -99,3 +99,18 @@ func UpdateFeatureTestVariant(tx *pg.Tx, featureTestVariantID int, name string, 
 
 	return &testVariant, nil
 }
+
+// DeleteFeatureTestVariant deletes a feature test variant by ID
+func DeleteFeatureTestVariant(tx *pg.Tx, variantID int) error {
+	variant := types.FeatureTestVariant{
+		ID: variantID,
+	}
+
+	err := tx.Delete(&variant)
+	if err != nil {
+		fmt.Printf("Error deleting feature test variant: %v", err)
+		return err
+	}
+
+	return nil
+}

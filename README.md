@@ -25,8 +25,13 @@ This was originally a project to predict how crowded the muni trains would be, b
     - Name
     - Percentage
     - Is control?
-- Delete a feature test variant (TBD)
-    - Cascade to users with that test variant (TBD)
-- Assign users to a test variant (TBD)
-- Change test variants for a user (TBD)
-    
+- Delete a feature test variant (DONE)
+    - Cascade to users with that test variant
+- Assign users to a test variant (create user test variant) (TBD)
+- Change test variants for a user (update user test variant) (TBD)
+- Delete user test variant (TBD)
+- Better error messages for constraint violations (TBD)
+
+DB:
+- check constraint on test variant percentage sum <= 100
+- check constraint on test variants for a test only having one row is_control = true
