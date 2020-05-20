@@ -27,7 +27,7 @@ This was originally a project to predict how crowded the muni trains would be, b
     - Is control?
 - Delete a feature test variant (DONE)
     - Cascade to users with that test variant
-- List user test variants (TBD)
+- List user test variants (DONE)
 - Assign users to a test variant (create user test variant) (TBD)
 - Change test variants for a user (update user test variant) (TBD)
 - Delete user test variant (TBD)
