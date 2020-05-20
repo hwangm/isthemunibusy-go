@@ -28,10 +28,13 @@ This was originally a project to predict how crowded the muni trains would be, b
 - Delete a feature test variant (DONE)
     - Cascade to users with that test variant
 - List user test variants (DONE)
-- Assign users to a test variant (create user test variant) (TBD)
-- Change test variants for a user (update user test variant) (TBD)
+- List feature tests (DONE)
+- List feature test variants (DONE)
+- Assign users to a test variant (create user test variant) (DONE)
+- Change test variants for a user (update user test variant) (DONE)
 - Delete user test variant (TBD)
 - Better error messages for constraint violations (TBD)
+- Only allow changes to feature test variant id for user feature test variant update (TBD)
 
 DB:
 - check constraint on test variant percentage sum <= 100
