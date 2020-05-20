@@ -33,6 +33,53 @@ type UserToFeatureUserTestVariant struct {
 	DeletedAt            time.Time `pg:",soft_delete"`
 }
 
+// UserFeatureTestVariantType is GraphQL schema for the user feature test variant type
+var UserFeatureTestVariantType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UserFeatureTestVariant",
+	Fields: graphql.Fields{
+		"userID": &graphql.Field{
+			Type: graphql.Int,
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				return params.Source.(UserToFeatureUserTestVariant).UserID, nil
+			},
+		},
+		"featureTestVariantID": &graphql.Field{
+			Type: graphql.Int,
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				return params.Source.(UserToFeatureUserTestVariant).FeatureTestVariantID, nil
+			},
+		},
+		"user": &graphql.Field{
+			Type: UserType,
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				userID := params.Source.(UserToFeatureUserTestVariant).UserID
+				user := User{ID: userID}
+				err := dal.DB.Select(&user)
+				if err != nil {
+					fmt.Printf("Error retrieving user from user feature test variant: %v", err)
+					return nil, err
+				}
+
+				return user, nil
+			},
+		},
+		"featureTestVariant": &graphql.Field{
+			Type: FeatureTestVariantType,
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				variantID := params.Source.(UserToFeatureUserTestVariant).FeatureTestVariantID
+				variant := FeatureTestVariant{ID: variantID}
+				err := dal.DB.Select(&variant)
+				if err != nil {
+					fmt.Printf("Error retrieving feature test variant from user feature test variant: %v", err)
+					return nil, err
+				}
+
+				return variant, nil
+			},
+		},
+	},
+})
+
 // UserType is GraphQL schema for the user type
 var UserType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "User",

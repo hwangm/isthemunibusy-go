@@ -45,3 +45,20 @@ func GetUserQuery() *graphql.Field {
 		},
 	}
 }
+
+// GetUserFeatureTestVariantsQuery returns all user feature test variants
+func GetUserFeatureTestVariantsQuery() *graphql.Field {
+	return &graphql.Field{
+		Type: graphql.NewList(types.UserFeatureTestVariantType),
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			var userTestVariants []types.UserToFeatureUserTestVariant
+			err := dal.DB.Model(&userTestVariants).Select()
+			if err != nil {
+				fmt.Printf("Error retrieving all user feature test variants: %v", err)
+				return nil, err
+			}
+
+			return userTestVariants, nil
+		},
+	}
+}
