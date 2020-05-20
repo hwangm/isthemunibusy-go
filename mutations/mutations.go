@@ -7,17 +7,17 @@ import (
 // GetRootFields returns available mutation fields
 func GetRootFields() graphql.Fields {
 	return graphql.Fields{
-		"createUser":               GetCreateUserMutation(),
-		"deleteUser":               GetDeleteUserByIDMutation(),
-		"createRole":               GetCreateRoleMutation(),
-		"createFeatureTest":        GetCreateFeatureTestMutation(),
-		"deleteFeatureTest":        GetDeleteFeatureTestMutation(),
-		"updateFeatureTest":        GetUpdateFeatureTestMutation(),
-		"createFeatureTestVariant": GetCreateFeatureTestVariantMutation(),
-		"deleteFeatureTestVariant": GetDeleteFeatureTestVariantMutation(),
-		"updateFeatureTestVariant": GetUpdateFeatureTestVariantMutation(),
-		// "createUserTestVariant": GetCreateUserTestVariantMutation(),
-		// "updateUserTestVariant": GetUpdateUserTestVariantMutation(),
-		// "deleteUserTestVariant": GetDeleteUserTestVariantMutation(),
+		"createUser":                   GetCreateUserMutation(),
+		"deleteUser":                   GetDeleteUserByIDMutation(),
+		"createRole":                   GetCreateRoleMutation(),
+		"createFeatureTest":            GetCreateFeatureTestMutation(),
+		"deleteFeatureTest":            GetDeleteFeatureTestMutation(),
+		"updateFeatureTest":            GetUpdateFeatureTestMutation(),
+		"createFeatureTestVariant":     GetCreateFeatureTestVariantMutation(),
+		"deleteFeatureTestVariant":     GetDeleteFeatureTestVariantMutation(),
+		"updateFeatureTestVariant":     GetUpdateFeatureTestVariantMutation(),
+		"createUserFeatureTestVariant": GetCreateUserFeatureTestVariantMutation(),
+		"updateUserFeatureTestVariant": GetUpdateUserFeatureTestVariantMutation(),
+		// "deleteUserFeatureTestVariant": GetDeleteUserFeatureTestVariantMutation(),
 	}
 }

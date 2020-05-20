@@ -114,3 +114,43 @@ func DeleteFeatureTestVariant(tx *pg.Tx, variantID int) error {
 
 	return nil
 }
+
+// CreateUserFeatureTestVariant creates a new user feature test variant
+func CreateUserFeatureTestVariant(tx *pg.Tx, userID int, variantID int) (*types.UserToFeatureUserTestVariant, error) {
+	userFTV := types.UserToFeatureUserTestVariant{
+		UserID:               userID,
+		FeatureTestVariantID: variantID,
+	}
+
+	err := tx.Insert(&userFTV)
+	if err != nil {
+		fmt.Printf("Error creating user feature test variant: %v", err)
+		return nil, err
+	}
+
+	return &userFTV, nil
+}
+
+// UpdateUserFeatureTestVariant updates an existing user feature test variant
+func UpdateUserFeatureTestVariant(tx *pg.Tx, userTestVariantID int, userID int, variantID int) (*types.UserToFeatureUserTestVariant, error) {
+	userFTV := types.UserToFeatureUserTestVariant{
+		ID: userTestVariantID,
+	}
+
+	err := tx.Select(&userFTV)
+	if err != nil {
+		fmt.Printf("Error selecting existing user feature test variant during update: %v", err)
+		return nil, err
+	}
+
+	userFTV.UserID = userID
+	userFTV.FeatureTestVariantID = variantID
+
+	err = tx.Update(&userFTV)
+	if err != nil {
+		fmt.Printf("Error updating user feature test variant: %v", err)
+		return nil, err
+	}
+
+	return &userFTV, nil
+}

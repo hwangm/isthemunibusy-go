@@ -28,6 +28,7 @@ type UserToRole struct {
 // UserToFeatureUserTestVariant - join table for users and feature test variants
 type UserToFeatureUserTestVariant struct {
 	tableName            struct{} `pg:"feature_usertestvariants"`
+	ID                   int
 	UserID               int
 	FeatureTestVariantID int       `pg:"feature_testvariant_id"`
 	DeletedAt            time.Time `pg:",soft_delete"`
@@ -37,6 +38,9 @@ type UserToFeatureUserTestVariant struct {
 var UserFeatureTestVariantType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UserFeatureTestVariant",
 	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
 		"userID": &graphql.Field{
 			Type: graphql.Int,
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
@@ -76,6 +80,20 @@ var UserFeatureTestVariantType = graphql.NewObject(graphql.ObjectConfig{
 
 				return variant, nil
 			},
+		},
+	},
+})
+
+// UserFeatureTestVariantInputType is the Graphql schema for user feature test variants,
+// used in the user feature test variant input object schema
+var UserFeatureTestVariantInputType = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "UserFeatureTestVariantInput",
+	Fields: graphql.InputObjectConfigFieldMap{
+		"userID": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.Int),
+		},
+		"featureTestVariantID": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.Int),
 		},
 	},
 })
