@@ -83,6 +83,30 @@ func GetUpdateUserFeatureTestVariantMutation() *graphql.Field {
 }
 
 // GetDeleteUserFeatureTestVariantMutation deletes a user feature test variant
-// func GetDeleteUserFeatureTestVariantMutation() *graphql.Field {
+func GetDeleteUserFeatureTestVariantMutation() *graphql.Field {
+	return &graphql.Field{
+		Type: graphql.Boolean,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.Int),
+			},
+		},
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			userTestVariantID := params.Args["id"].(int)
+			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {
+				err := service.DeleteUserFeatureTestVariant(tx, userTestVariantID)
+				if err != nil {
+					return err
+				}
 
-// }
+				return nil
+			})
+
+			if err != nil {
+				return false, err
+			}
+
+			return true, err
+		},
+	}
+}
