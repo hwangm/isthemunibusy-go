@@ -47,3 +47,20 @@ func GetFeatureTestQuery() *graphql.Field {
 		},
 	}
 }
+
+// GetFeatureTestVariantsQuery returns all feature test variants
+func GetFeatureTestVariantsQuery() *graphql.Field {
+	return &graphql.Field{
+		Type: graphql.NewList(types.FeatureTestVariantType),
+		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+			var featureTestVariants []types.FeatureTestVariant
+			err := dal.DB.Model(&featureTestVariants).Select()
+			if err != nil {
+				fmt.Printf("Error retrieving all feature test variants: %v", err)
+				return nil, err
+			}
+
+			return featureTestVariants, nil
+		},
+	}
+}

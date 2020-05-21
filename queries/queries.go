@@ -11,6 +11,7 @@ func GetRootFields() graphql.Fields {
 		"user":                    GetUserQuery(),
 		"featureTests":            GetFeatureTestsQuery(),
 		"featureTest":             GetFeatureTestQuery(),
+		"featureTestVariants":     GetFeatureTestVariantsQuery(),
 		"userFeatureTestVariants": GetUserFeatureTestVariantsQuery(),
 	}
 }
