@@ -24,13 +24,13 @@ func GetCreateFeatureTestMutation() *graphql.Field {
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 			input := params.Args["input"].(map[string]interface{})
 			name := input["name"].(string)
+			startTime := input["startTime"].(time.Time)
+			endTime := input["endTime"].(time.Time)
 			variants := input["variants"].([]interface{})
 
-			currentTime := time.Now()
-			endTime := currentTime.Add(time.Hour * 24 * 365) // 1 year
 			featureTest := types.FeatureTest{
 				Name:      name,
-				StartTime: currentTime,
+				StartTime: startTime,
 				EndTime:   endTime,
 			}
 			err := dal.DB.RunInTransaction(func(tx *pg.Tx) error {

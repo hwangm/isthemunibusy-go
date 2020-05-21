@@ -3,7 +3,7 @@
 This was originally a project to predict how crowded the muni trains would be, but given the current circumstances with COVID-19, I have decided to pivot this project to be a feature test admin tool.
 
 ## Features
-- Create a new feature test (TODO: Add start/end date to input object)
+- Create a new feature test (DONE)
     - Name
     - Start date
     - End date
@@ -39,3 +39,6 @@ This was originally a project to predict how crowded the muni trains would be, b
 DB:
 - check constraint on test variant percentage sum <= 100
 - check constraint on test variants for a test only having one row is_control = true
+
+## Notes
+- graphql DateTime field expects an input like "2020-05-05T00:00:00Z". It's pretty picky about the time formatting.

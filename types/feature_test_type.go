@@ -39,6 +39,12 @@ var FeatureTestInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 		"name": &graphql.InputObjectFieldConfig{
 			Type: graphql.NewNonNull(graphql.String),
 		},
+		"startTime": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.DateTime),
+		},
+		"endTime": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.DateTime),
+		},
 		"variants": &graphql.InputObjectFieldConfig{
 			Type: graphql.NewNonNull(graphql.NewList(FeatureTestVariantInputType)),
 		},
