@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -143,7 +144,11 @@ func UpdateUserFeatureTestVariant(tx *pg.Tx, userTestVariantID int, userID int, 
 		return nil, err
 	}
 
-	userFTV.UserID = userID
+	if userFTV.UserID != userID {
+		fmt.Printf("Attempted update of user feature test variant to a different user. Initial user %d, new user %d", userFTV.UserID, userID)
+		return nil, errors.New("Cannot update user feature test variant to a different user")
+	}
+
 	userFTV.FeatureTestVariantID = variantID
 
 	err = tx.Update(&userFTV)
