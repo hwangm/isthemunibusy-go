@@ -73,6 +73,12 @@ func CreateFeatureTestVariant(tx *pg.Tx, featureTestID int, name string, isContr
 		return nil, err
 	}
 
+	// PG returns id 0 if fails check constraint
+	if testVariant.ID == 0 {
+		fmt.Print("Creating feature test variant failed constraint checks on is_control or percentage")
+		return nil, errors.New("Creating feature test variant failed constraint checks on is_control or percentage")
+	}
+
 	return &testVariant, nil
 }
 
@@ -94,8 +100,18 @@ func UpdateFeatureTestVariant(tx *pg.Tx, featureTestVariantID int, name string, 
 
 	err = tx.Update(&testVariant)
 	if err != nil {
+		if err == pg.ErrNoRows {
+			fmt.Print("Updating feature test variant failed constraint checks on is_control or percentage")
+			return nil, errors.New("Updating feature test variant failed constraint checks on is_control or percentage")
+		}
 		fmt.Printf("Error updating existing feature test variant during update: %v", err)
 		return nil, err
+	}
+
+	// PG returns id 0 if fails check constraint
+	if testVariant.ID == 0 {
+		fmt.Print("Updating feature test variant failed constraint checks on is_control or percentage")
+		return nil, errors.New("Updating feature test variant failed constraint checks on is_control or percentage")
 	}
 
 	return &testVariant, nil

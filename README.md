@@ -34,11 +34,13 @@ This was originally a project to predict how crowded the muni trains would be, b
 - Change test variants for a user (update user test variant) (DONE)
 - Delete user test variant (DONE)
 - Only allow changes to feature test variant id for user feature test variant update (DONE)
-- Better error messages for constraint violations (TBD)
+- Better error messages for constraint violations (DONE)
 
 DB:
-- check constraint on test variant percentage sum <= 100
+- check constraint on test variant percentage sum <= 100 (DONE)
 - check constraint on test variants for a test only having one row is_control = true
+    - insert (DONE)
+    - update (leaving alone for now)
 
 ## Notes
 - graphql DateTime field expects an input like "2020-05-05T00:00:00Z". It's pretty picky about the time formatting.
