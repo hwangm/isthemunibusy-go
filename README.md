@@ -42,5 +42,14 @@ DB:
     - insert (DONE)
     - update (leaving alone for now)
 
+## How to run locally
+Navigate to the go repo directory (`go\src\github.com\hwangm\isthemunibusy-go`)
+In a terminal window, run `go run .\main.go`.
+
+To restart, Ctrl-C and re-run.
+
 ## Notes
 - graphql DateTime field expects an input like "2020-05-05T00:00:00Z". It's pretty picky about the time formatting.
+
+- 2/15/2021: added a websocket handler at "ws://localhost:8080/websocket" to test notification service. React app currently configured to auto-connect to this WS endpoint. Incoming messages will be printed in stdout, then sleep for 5 seconds and send a message to the client. 
+
